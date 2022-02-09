@@ -3,6 +3,8 @@
 use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ProductCouponController;
+use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\TagController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -55,12 +57,16 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.' ], function(){
             Route::post('products-removeImage', [ProductController::class, 'removeImage'])->name('products.removeImage');
             Route::post('products-destroyAll', [ProductController::class,'massDestroy'])->name('products.massDestroy');
             Route::get('products-changeStatus', [ProductController::class,'changeStatus'])->name('products.changeStatus');
-            // Route::resource('productCopons',ProductCoponController::class);
-            // Route::resource('productReviews',ProductReviewController::class);
+            /*  productCoupons   */
+            Route::resource('productCoupons',ProductCouponController::class);
+            Route::get('productCoupons-changeStatus', [ProductCouponController::class,'changeStatus'])->name('productCoupons.changeStatus');
+            Route::post('productCoupons-destroyAll', [ProductCouponController::class,'massDestroy'])->name('productCoupons.massDestroy');
+            /*  productReviews   */
+            Route::resource('productReviews',ProductReviewController::class);
+            Route::get('productReviews-changeStatus', [ProductReviewController::class,'changeStatus'])->name('productReviews.changeStatus');
+            Route::post('productReviews-destroyAll', [ProductReviewController::class,'massDestroy'])->name('productReviews.massDestroy');
 
 
-
-            
 
             // Route::resource('admins'    ,AdminController::class);
             // Route::post('/admins/removeImage', 'Backend\AdminController@removeImage')->name('admins.removeImage');

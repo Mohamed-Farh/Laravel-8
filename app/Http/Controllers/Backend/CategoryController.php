@@ -225,7 +225,7 @@ class CategoryController extends Controller
         $category = Category::find($request->cat_id);
         $category->status = $request->status;
         $category->save();
-        return response()->json(['success'=>'Status change successfully.']);
+        return response()->json(['success'=>'Status Change Successfully.']);
     }
 
 }

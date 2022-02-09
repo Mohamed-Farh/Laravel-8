@@ -249,7 +249,7 @@ class ProductController extends Controller
             if (File::exists($product->media->file_name)) :
                 unlink($product->media->file_name);
             endif;
-            
+
             $product->delete();
         }
         return response()->json([
@@ -263,6 +263,6 @@ class ProductController extends Controller
         $product = Product::find($request->cat_id);
         $product->status = $request->status;
         $product->save();
-        return response()->json(['success'=>'Status change successfully.']);
+        return response()->json(['success'=>'Status Change Successfully.']);
     }
 }

@@ -4,7 +4,7 @@
 
 <!--begin::Aside-->
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
-    
+
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
         <!--begin::Logo-->
@@ -50,7 +50,7 @@
                                 </a>
                             </li>
                         @else
-                            <li class="menu-item menu-item-submenu {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'menu-item-open' : '' }} " 
+                            <li class="menu-item menu-item-submenu {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'menu-item-open' : '' }} "
                                     aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle {{ in_array($menu->parent_show, [getParentShowOf($current_page), getParentOf($current_page)]) ? 'menu-item-open' : '' }}">
                                     <i class="{{ $menu->icon != null ? $menu->icon : 'fa fa-home' }}"></i>
@@ -68,7 +68,8 @@
                                                         <span class="menu-text">{{ $menu->display_name }}</span>
                                                     </span>
                                                 </li>
-                                                <li class="menu-item   {{ getParentOf($current_page) != null && (int)(getParentShowOf($current_page)+1) == $sub_menu->id ? 'menu-item-open' : null }} " aria-haspopup="true">
+                                                {{-- <li class="menu-item   {{ getParentOf($current_page) != null && (int)(getParentShowOf($current_page)+1) == $sub_menu->id ? 'menu-item-open' : null }} " aria-haspopup="true"> --}}
+                                                <li class="menu-item" aria-haspopup="true">
                                                     <a href="{{ route('admin.' . $sub_menu->as) }}" class="menu-link">
                                                         <i class="menu-bullet menu-bullet-dot">
                                                             <i class="{{ $sub_menu->icon != null ? $sub_menu->icon : '' }}"></i>

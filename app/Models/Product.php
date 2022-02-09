@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Product extends Model
 {
+    use SearchableTrait;
     use Sluggable;
 
     protected $guarded = [];
@@ -90,10 +91,10 @@ class Product extends Model
         return $this->MorphMany(Media::class, 'mediable');
     }
 
-    // public function reviews(): HasMany
-    // {
-    //     return $this->hasMany(ProductReview::class);
-    // }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 
     // public function orders(): BelongsToMany
     // {

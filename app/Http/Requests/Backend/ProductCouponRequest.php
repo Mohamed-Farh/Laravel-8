@@ -4,7 +4,7 @@ namespace App\Http\Requests\Backend;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductCoponRequest extends FormRequest
+class ProductCouponRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class ProductCoponRequest extends FormRequest
             case 'POST':
             {
                 return[
-                    'code'          => 'required|unique:product_copons',
+                    'code'          => 'required|unique:product_coupons',
                     'type'          => 'required',
                     'value'         => 'required',
                     'description'   => 'nullable',
@@ -44,7 +44,7 @@ class ProductCoponRequest extends FormRequest
             case 'PATCH':
             {
                 return[
-                    'code'          => 'required|unique:product_copons,code,'.$this->route()->productCopon->id,
+                    'code'          => 'required|unique:product_coupons,code,'.$this->route()->productCoupon->id,
                     'type'          => 'required',
                     'value'         => 'required',
                     'description'   => 'nullable',

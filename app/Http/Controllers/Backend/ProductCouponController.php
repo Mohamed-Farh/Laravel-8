@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\TagRequest;
-use App\Models\Tag;
-use Alert;
+use App\Http\Requests\Backend\ProductCouponRequest;
+use App\Models\ProductCoupon;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
-
-class TagController extends Controller
+class ProductCouponController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +17,11 @@ class TagController extends Controller
      */
     public function index()
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,show_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,show_productCoupons')) {
             return redirect('admin/index');
         }
 
-        $tags = Tag::with('products')
+        $productCoupons = ProductCoupon::query()
 
         ->when(\request()->keyword !=null, function($query){
             $query->search(\request()->keyword);
@@ -34,7 +33,7 @@ class TagController extends Controller
 
         ->paginate(\request()->limit_by ?? 10);
 
-        return view('backend.tags.index', compact('tags'));
+        return view('backend.productCoupons.index', compact('productCoupons'));
     }
 
     /**
@@ -44,11 +43,11 @@ class TagController extends Controller
      */
     public function create()
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,create_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,create_productCoupons')) {
             return redirect('admin/index');
         }
 
-        return view('backend.tags.create');
+        return view('backend.productCoupons.create');
     }
 
     /**
@@ -57,16 +56,16 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TagRequest $request)
+    public function store(ProductCouponRequest $request)
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,create_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,create_productCoupons')) {
             return redirect('admin/index');
         }
 
-        Tag::create($request->validated());
+        $productCoupons = ProductCoupon::create($request->validated());
 
-        Alert::success('Tag Created Successfully', 'Success Message');
-        return redirect()->route('admin.tags.index');
+        Alert::success('Product Coupon Created Successfully', 'Success Message');
+        return redirect()->route('admin.productCoupons.index');
     }
 
     /**
@@ -75,13 +74,13 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show(ProductCoupon $productCoupon)
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,display_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,show_productCoupons')) {
             return redirect('admin/index');
         }
 
-        return view('backend.tags.show', compact('tag'));
+        return view('backend.tags.show', compact('productCoupon'));
     }
 
     /**
@@ -90,13 +89,13 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tag $tag)
+    public function edit(ProductCoupon $productCoupon)
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,update_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,update_productCoupons')) {
             return redirect('admin/index');
         }
 
-        return view('backend.tags.edit', compact('tag'));
+        return view('backend.productCoupons.edit', compact('productCoupon'));
     }
 
     /**
@@ -106,20 +105,16 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TagRequest $request, Tag $tag)
+    public function update(ProductCouponRequest $request, ProductCoupon $productCoupon)
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,update_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,update_productCoupons')) {
             return redirect('admin/index');
         }
 
-        $input['name']      = $request->name;
-        $input['slug']      = null;
-        $input['status']    = $request->status;
+        $productCoupon->update($request->validated());
 
-        $tag->update($input);
-
-        Alert::success('Tag Updated Successfully', 'Success Message');
-        return redirect()->route('admin.tags.index');
+        Alert::success('Product Coupon Updated Successfully', 'Success Message');
+        return redirect()->route('admin.productCoupons.index');
     }
 
     /**
@@ -128,26 +123,24 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(ProductCoupon $productCoupon)
     {
-        if (!\auth()->user()->ability('superAdmin', 'manage_tags,delete_tags')) {
+        if (!\auth()->user()->ability('superAdmin', 'manage_productCoupons,delete_productCoupons')) {
             return redirect('admin/index');
         }
 
-        $tag->delete();
+        $productCoupon->delete();
 
-        Alert::success('Tag Deleted Successfully', 'Success Message');
-        return redirect()->route('admin.tags.index');
-
+        Alert::success('Product Coupon Deleted Successfully', 'Success Message');
+        return redirect()->route('admin.productCoupons.index');
     }
-
 
     public function massDestroy(Request $request)
     {
         $ids = $request->ids;
         foreach ($ids as $id) {
-            $tag = Tag::findorfail($id);
-            $tag->delete();
+            $productCoupon = ProductCoupon::findorfail($id);
+            $productCoupon->delete();
         }
         return response()->json([
             'error' => false,
@@ -157,9 +150,10 @@ class TagController extends Controller
 
     public function changeStatus(Request $request)
     {
-        $tag = Tag::find($request->cat_id);
-        $tag->status = $request->status;
-        $tag->save();
+        $productCoupon = ProductCoupon::find($request->cat_id);
+        $productCoupon->status = $request->status;
+        $productCoupon->save();
         return response()->json(['success'=>'Status Change Successfully.']);
     }
+
 }

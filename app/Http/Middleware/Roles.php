@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Role;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
@@ -16,19 +17,16 @@ class Roles
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $routeName = Route::getFacadeRoot()->current()->uri();
-
-        $route = explode('/', $routeName);  //بياخد الراوت اللي قي المتصفح فوق و يقسمه الي اجزاء
-
-        // $roleRoutes = Role::distinct()->whereNotNull('allowed_route')->pluck('allowed_route')->toArray(); //allowed_route الموجوده في الداتا بيز هيكون فيها كذا نوع هو هياخد من كل نوع حاجه واحده بس
+        $route = explode('/', $routeName);
 
         if (auth()->check()) {
-            if (!in_array($route[0], $this->roleRoutes() )) {
+            if (!in_array($route[0], $this->roleRoutes())) {
                 return $next($request);
             } else {
-                if ($route[0] != $this->userRoutes() ) {
+                if ($route[0] != $this->userRoutes()) {
                     $path = $route[0] == $this->userRoutes() ? $route[0].'.login' : '' . $this->userRoutes().'.index';
                     return redirect()->route($path);
                 } else {
@@ -36,37 +34,25 @@ class Roles
                 }
             }
         } else {
-
-            $routeDistination = in_array($route[0], $this->roleRoutes() ) ? $route[0].'.login' : 'login';
-
-            $path = $route[0] != '' ? $routeDistination : $this->userRoutes().'.index';
-
+            $routeDestination = in_array($route[0], $this->roleRoutes()) ? $route[0].'.login' : 'login';
+            $path = $route[0] != '' ? $routeDestination : $this->userRoutes().'.index';
             return redirect()->route($path);
         }
     }
 
-    //بخزنها في الكاش علشان مش تتكرر كل مره افتح صفحة ويب ينفذ الامر دا
     protected function roleRoutes()
     {
-        //لو مافيش قيمة مخزنة عند تحميل الصفحات باسم هذا الكاش - نفذ الخطوات التالية
-        if (!Cache::has('role_routes'))
-        {
-            //تذكر هذا الكاش دائما وهعطيه اسمه
-            //'role_routes'=>اسم الكاش
-            //,....=>قيمة الكاش او القيمة اللي هيتذكرها الكاش
+        if (!Cache::has('role_routes')) {
             Cache::forever('role_routes', Role::distinct()->whereNotNull('allowed_route')->pluck('allowed_route')->toArray());
         }
-        //لو فيه بقي قسمة متخزنة هاتها و ارجع بقيمتها
         return Cache::get('role_routes');
     }
 
     protected function userRoutes()
     {
-        if (!Cache::has('user_routes'))
-        {
-            Cache::forever('user_routes', auth()->user()->roles[0]->allowed_route );
+        if (!Cache::has('user_routes')) {
+            Cache::forever('user_routes', auth()->user()->roles[0]->allowed_route);
         }
         return Cache::get('user_routes');
     }
 }
-
