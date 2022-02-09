@@ -7,7 +7,7 @@
             <!--begin::Header Menu-->
             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                 <!--begin::Header Nav-->
-                
+
                 <ul class="menu-nav">
                     <li class="menu-item menu-item-submenu menu-item-rel menu-item-active">
                         <a class="menu-link menu-toggle">
@@ -1330,6 +1330,23 @@
                 </div>
             </div>
             <!--end::Chat-->
+
+            @if(auth()->user()->ability('superAdmin', 'manage_users,show_users'))
+                <div class="topbar-item">
+                    <a class="nav-link" href="{{ route('admin.users.index') }}">
+                        Users
+                    </a>
+                </div>
+            @endif
+            @if(auth()->user()->ability('superAdmin', 'manage_admins,show_admins'))
+                <div class="topbar-item">
+                    <a class="nav-link" href="{{ route('admin.admins.index') }}">
+                        Admins
+                    </a>
+                </div>
+            @endif
+
+            
             <!--begin::Languages-->
             <div class="dropdown">
                 <!--begin::Toggle-->

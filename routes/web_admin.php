@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProductCouponController;
 use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\TagController;
+use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -67,15 +70,23 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.' ], function(){
             Route::post('productReviews-destroyAll', [ProductReviewController::class,'massDestroy'])->name('productReviews.massDestroy');
 
 
+            /*  Admins   */
+            Route::resource('admins'    ,AdminController::class);
+            Route::post('admins-removeImage', [AdminController::class,'removeImage'])->name('admins.removeImage');
+            Route::get('admins-changeStatus', [AdminController::class,'changeStatus'])->name('admins.changeStatus');
+            Route::post('admins-destroyAll', [AdminController::class,'massDestroy'])->name('admins.massDestroy');
+            /*  Users   */
+            Route::resource('users'    ,UserController::class);
+            Route::post('users-removeImage', [UserController::class,'removeImage'])->name('users.removeImage');
+            Route::get('users-changeStatus', [UserController::class,'changeStatus'])->name('users.changeStatus');
+            Route::post('users-destroyAll', [UserController::class,'massDestroy'])->name('users.massDestroy');
+            /*  Customers   */
+            Route::resource('customers'    ,CustomerController::class);
+            Route::post('customers-removeImage', [CustomerController::class,'removeImage'])->name('customers.removeImage');
+            Route::get('customers-changeStatus', [CustomerController::class,'changeStatus'])->name('customers.changeStatus');
+            Route::post('customers-destroyAll', [CustomerController::class,'massDestroy'])->name('customers.massDestroy');
 
-            // Route::resource('admins'    ,AdminController::class);
-            // Route::post('/admins/removeImage', 'Backend\AdminController@removeImage')->name('admins.removeImage');
 
-            // Route::resource('users'     ,UserController::class);
-            // Route::post('/users/removeImage', 'Backend\UserController@removeImage')->name('users.removeImage');
-
-            // Route::resource('customers' ,CustomerController::class);
-            // Route::post('/customers/removeImage',   'Backend\CustomerController@removeImage')->name('customers.removeImage');
             // Route::get('/get_customer_customerSearch',   [CustomerSearchController::class, 'index'    ])->name('customers.get_customer');
             // Route::get('/get_state_customerSearch',      [CustomerSearchController::class, 'get_state_customerSearch'    ])->name('customers.get_state_customerSearch');
             // Route::get('/get_city_customerSearch',      [CustomerSearchController::class, 'get_city_customerSearch'    ])->name('customers.get_city_customerSearch');

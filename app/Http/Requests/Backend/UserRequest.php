@@ -50,7 +50,7 @@ class UserRequest extends FormRequest
                     'mobile'        => 'required|numeric|unique:users,mobile,'.$this->route()->user->id,
                     'status'        => 'required',
                     'password'      => 'nullable|min:8',
-                    'user_image'    => 'required|mimes:png,jpg,jpeg,svg|max:5048'
+                    'user_image'    => 'nullable|mimes:png,jpg,jpeg,svg|max:5048'
                 ];
             }
 
