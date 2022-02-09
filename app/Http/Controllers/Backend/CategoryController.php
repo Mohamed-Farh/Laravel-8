@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
-use Alert;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CategoryController extends Controller
 {
