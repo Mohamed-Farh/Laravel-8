@@ -4,16 +4,16 @@
 
 @section('content')
 
-
+<div class="container">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Edit Tag {{ $tag->name }}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Edit Tag</h6>
             <div class="ml-auto">
                 <a href="{{ route('admin.tags.index') }}" class="btn btn-primary">
                     <span class="icon text-white-50">
                         <i class="fa fa-home"></i>
                     </span>
-                    <span class="text">Tags</span>
+                    <span class="text">tags</span>
                 </a>
             </div>
         </div>
@@ -40,15 +40,13 @@
                         @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
-
-                <div class="form-group pt-4">
-                    <button type="submit" name="submit" class="btn btn-primary">Update Tag</button>
+                <div class="form-group pt-4 text-center">
+                    <button type="submit" name="submit" class="btn btn-primary">Update tag</button>
                 </div>
             </form>
         </div>
     </div>
-
-
+</div>
 
 @endsection
 

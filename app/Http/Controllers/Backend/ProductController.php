@@ -8,10 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
+use Alert;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 
@@ -24,7 +21,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //هنا هنعطي لكل واحد الدور بتاعه و صلاحياته
         if (!\auth()->user()->ability('superAdmin', 'manage_products,show_products')) {
             return redirect('admin/index');
         }
@@ -39,7 +35,7 @@ class ProductController extends Controller
         })
         ->orderBy(\request()->sort_by ?? 'id' ,  \request()->order_by ?? 'desc')
 
-        ->paginate(\request()->limit_by ?? 10);  //بمعني وانت راجع بالكاتبجوري هات معاك مجمع المنتجات الخاصة بكل كاتبجوري
+        ->paginate(\request()->limit_by ?? 10);
 
         return view('backend.products.index', compact('products'));
     }
@@ -83,7 +79,7 @@ class ProductController extends Controller
 
         $product = Product::create($input); //قم بانشاء كاتيجوري جديدة وخد المتغيرات بتاعتك من المتغير اللي اسمه انبوت
 
-        $product->tags()->attach($request->tags); //لان هذا علاقة ماني تى ماني
+        $product->tags()->attach($request->tags); //لان هذا علاقة مني تو مني
 
         if ($request->images && count($request->images) > 0) {
             $i = 1;
@@ -91,13 +87,13 @@ class ProductController extends Controller
                 $filename = $product->slug.'-'.time().'-'.$i.'.'.$file->getClientOriginalExtension();
                 $file_size = $file->getSize();
                 $file_type = $file->getMimeType();
-                $path = ('assets/products/' . $filename);
+                $path = ('images/product/' . $filename);
                 Image::make($file->getRealPath())->resize(800, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($path, 100);
 
                 $product->media()->create([
-                    'file_name'     => $filename,
+                    'file_name'     => $path,
                     'file_size'     => $file_size,
                     'file_type'     => $file_type,
                     'file_status'   => true,
@@ -107,10 +103,9 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.products.index')->with([
-            'message' => 'Product Created Successfully',
-            'alert-type' => 'success'
-        ]);
+        Alert::success('Product Created Successfully', 'Success Message');
+
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -167,7 +162,7 @@ class ProductController extends Controller
         $input['featured']      = $request->featured;
         $input['status']        = $request->status;
 
-        $product->update($input); //قم بانشاء كاتيجوري جديدة وخد المتغيرات بتاعتك من المتغير اللي اسمه انبوت
+        $product->update($input);
 
         $product->tags()->sync($request->tags);
 
@@ -177,13 +172,13 @@ class ProductController extends Controller
                 $filename = $product->slug.'-'.time().'-'.$i.'.'.$file->getClientOriginalExtension();
                 $file_size = $file->getSize();
                 $file_type = $file->getMimeType();
-                $path = ('assets/products/' . $filename);
+                $path = ('images/product/' . $filename);
                 Image::make($file->getRealPath())->resize(800, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($path, 100);
 
                 $product->media()->create([
-                    'file_name'     => $filename,
+                    'file_name'     => $path,
                     'file_size'     => $file_size,
                     'file_type'     => $file_type,
                     'file_status'   => true,
@@ -192,11 +187,9 @@ class ProductController extends Controller
                 $i++;
             }
         }
+        Alert::success('Product Updated Successfully', 'Success Message');
 
-        return redirect()->route('admin.products.index')->with([
-            'message' => 'Product Updated Successfully',
-            'alert-type' => 'success'
-        ]);
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -215,18 +208,17 @@ class ProductController extends Controller
         {
             foreach ($product->media as $media)
             {
-                if (File::exists('assets/products/' . $media->file_name)) {
-                    unlink('assets/products/' . $media->file_name);
+                if (File::exists($media->file_name)) {
+                    unlink($media->file_name);
                 }
                 $media->delete();
             }
         }
         $product->delete();
 
-        return redirect()->route('admin.products.index')->with([
-            'message' => 'Product Deleted Successfully',
-            'alert-type' => 'success'
-        ]);
+        Alert::success('Product Deleted Successfully', 'Success Message');
+
+        return redirect()->route('admin.products.index');
 
     }
 
@@ -234,8 +226,6 @@ class ProductController extends Controller
 
     public function removeImage(Request $request)
     {
-        // dd($request->all());
-
         if (!\auth()->user()->ability('superAdmin', 'manage_products,delete_products')) {
             return redirect('admin/index');
         }
@@ -243,13 +233,36 @@ class ProductController extends Controller
         $product = Product::findOrFail($request->product_id);
         $image   = $product->media()->whereId($request->image_id)->first();
         if ($image) {
-            if (File::exists('assets/products/' . $image->file_name)) {
-                unlink('assets/products/' . $image->file_name);
+            if (File::exists($image->file_name)) {
+                unlink($image->file_name);
             }
         }
         $image->delete();
         return true;
     }
 
+    public function massDestroy(Request $request)
+    {
+        $ids = $request->ids;
+        foreach ($ids as $id) {
+            $product = Product::findorfail($id);
+            if (File::exists($product->media->file_name)) :
+                unlink($product->media->file_name);
+            endif;
+            
+            $product->delete();
+        }
+        return response()->json([
+            'error' => false,
+        ], 200);
 
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $product = Product::find($request->cat_id);
+        $product->status = $request->status;
+        $product->save();
+        return response()->json(['success'=>'Status change successfully.']);
+    }
 }

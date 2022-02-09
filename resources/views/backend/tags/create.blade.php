@@ -4,9 +4,7 @@
 
 @section('content')
 
-@include('sweetalert::alert')
-
-
+<div class="container">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
             <h6 class="m-0 font-weight-bold text-primary">Create Tag</h6>
@@ -20,7 +18,6 @@
             </div>
         </div>
         <div class="card-body">
-
             <form action="{{ route('admin.tags.store') }}" method="post">
                 @csrf
                 <div class="row">
@@ -42,13 +39,13 @@
                     </div>
                 </div>
 
-                <div class="form-group pt-4">
+                <div class="form-group pt-4 text-center">
                     <button type="submit" name="submit" class="btn btn-primary">Add Tag</button>
                 </div>
             </form>
         </div>
     </div>
-
+</div>
 
 
 @endsection

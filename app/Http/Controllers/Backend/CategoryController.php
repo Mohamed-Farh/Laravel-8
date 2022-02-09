@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Country;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Alert;

@@ -22,16 +22,10 @@
             text-align: center;
             text-shadow: 1px 1px #b0bed9, -1px -1px #b0bed9, 1px -1px #b0bed9, -1px 1px #b0bed9;
         }
-
-        /* td {
-            text-align: center !important;
-            vertical-align: middle !important;
-        } */
-
     </style>
 @endsection
-@section('content')
 
+@section('content')
 
 
     <div class="container">
@@ -185,8 +179,6 @@
                 'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json'
             };
             var table = $('.yajra-datatable').DataTable({
-                //processing: true,
-                //serverSide: true,
                 language: {
                     url: languages['{{ app()->getLocale() }}']
                 },

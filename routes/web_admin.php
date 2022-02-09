@@ -42,15 +42,25 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.' ], function(){
             /*  Category   */
             Route::resource('categories',CategoryController::class);
             Route::post('/categories/removeImage', [CategoryController::class, 'removeImage'])->name('categories.removeImage');
-            Route::post('delete-cat-img',[CategoryController::class,'deleteattachment'])->name('categories.deleteImage');
             Route::post('categories/destroyAll', [CategoryController::class,'massDestroy'])->name('categories.massDestroy');
             Route::get('changeStatus', [CategoryController::class,'changeStatus'])->name('categories.changeStatus');
 
-            Route::post('/products/removeImage', 'Backend\ProductController@removeImage')->name('products.removeImage');
-            Route::resource('products',ProductController::class);
+            /*  Tags   */
             Route::resource('tags',TagController::class);
+            Route::post('tags-destroyAll', [TagController::class,'massDestroy'])->name('tags.massDestroy');
+            Route::get('tags-changeStatus', [TagController::class,'changeStatus'])->name('tags.changeStatus');
+
+            /*  Products   */
+            Route::resource('products',ProductController::class);
+            Route::post('products-removeImage', [ProductController::class, 'removeImage'])->name('products.removeImage');
+            Route::post('products-destroyAll', [ProductController::class,'massDestroy'])->name('products.massDestroy');
+            Route::get('products-changeStatus', [ProductController::class,'changeStatus'])->name('products.changeStatus');
             // Route::resource('productCopons',ProductCoponController::class);
             // Route::resource('productReviews',ProductReviewController::class);
+
+
+
+            
 
             // Route::resource('admins'    ,AdminController::class);
             // Route::post('/admins/removeImage', 'Backend\AdminController@removeImage')->name('admins.removeImage');

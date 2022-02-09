@@ -1,4 +1,4 @@
-@extends('layouts.admin_auth_app')
+@extends('layouts.auth_admin_app')
 
 @section('title', 'Edit Product')
 
@@ -8,6 +8,7 @@
 
 @section('content')
 
+<div class="container">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex">
             <h6 class="m-0 font-weight-bold text-primary">Edit Product {{ $product->name }}</h6>
@@ -62,7 +63,7 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <label for="description">Product Description</label>
-                        <textarea name="description" rows="5" class="form-control summernote">{!! old('description', $product->description ) !!}</textarea>
+                        <textarea name="description" rows="5" class="form-control">{!! old('description', $product->description ) !!}</textarea>
                         @error('description')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>
@@ -114,13 +115,13 @@
                     </div>
                 </div>
 
-                <div class="form-group pt-4">
+                <div class="form-group pt-4 text-center">
                     <button type="submit" name="submit" class="btn btn-primary">Update Product</button>
                 </div>
             </form>
         </div>
     </div>
-
+</div>
 
 
     @endsection
@@ -187,7 +188,7 @@
                     initialPreview: [
                         @if($product->media->count() > 0)
                             @foreach($product->media as $media)
-                                "{{url('assets/products/'.$media->file_name)}}",
+                                "{{asset($media->file_name)}}",
                             @endforeach
                         @endif
                     ],

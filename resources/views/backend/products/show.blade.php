@@ -1,11 +1,11 @@
-@extends('layouts.admin_auth_app')
+@extends('layouts.auth_admin_app')
 
-@section('title', 'Forgot Password')
+@section('title', 'Show Single Product')
 
 @section('content')
 
 
-<h1>Show</h1>
+<h1>Show Single Product</h1>
 
 
 
