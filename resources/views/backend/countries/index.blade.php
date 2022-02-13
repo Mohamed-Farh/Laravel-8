@@ -115,6 +115,10 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- Pagination --}}
+                <div class="d-flex justify-content-center">
+                    {!! $countries->appends(request()->input())->links() !!}
+                </div>
             </div>
         </div>
     </div>

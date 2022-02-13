@@ -131,6 +131,10 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- Pagination --}}
+                <div class="d-flex justify-content-center">
+                    {!! $users->appends(request()->input())->links() !!}
+                </div>
             </div>
         </div>
     </div>

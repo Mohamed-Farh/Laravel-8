@@ -110,6 +110,10 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- Pagination --}}
+                <div class="d-flex justify-content-center">
+                    {!! $productReviews->appends(request()->input())->links() !!}
+                </div>
             </div>
         </div>
     </div>

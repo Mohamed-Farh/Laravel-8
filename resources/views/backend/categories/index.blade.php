@@ -104,7 +104,7 @@
                                         @endability
 
                                         @ability('superAdmin', 'manage_categories,delete_categories')
-                                            <a href="javascript:void(0)" 
+                                            <a href="javascript:void(0)"
                                                 onclick="
                                                     if (confirm('Are You Sure You Want To Delete This Record ?') )
                                                         { document.getElementById('record_delete_{{ $category->id }}').submit(); }
@@ -123,6 +123,10 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- Pagination --}}
+                <div class="d-flex justify-content-center">
+                    {!! $categories->appends(request()->input())->links() !!}
+                </div>
             </div>
         </div>
     </div>

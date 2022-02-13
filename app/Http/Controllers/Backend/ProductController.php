@@ -8,9 +8,9 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Alert;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
@@ -104,7 +104,6 @@ class ProductController extends Controller
         }
 
         Alert::success('Product Created Successfully', 'Success Message');
-
         return redirect()->route('admin.products.index');
     }
 

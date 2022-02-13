@@ -190,11 +190,8 @@ class EntrustSeeder extends Seeder
         $destroyCustomers = Permission::create([ 'name' => 'delete_customers',        'display_name' => 'Delete Customers',       'route' => 'customers.destroy',        'module' => 'customers', 'as' => 'customers.destroy',     'icon' => null,                  'parent' => $manageCustomers->id, 'parent_show' => $manageCustomers->id, 'parent_original' => $manageCustomers->id,'sidebar_link' => '1', 'appear' => '0', ]);
 
 
-
-
-
         //Countries
-        $manageCountries = Permission::create([ 'name' => 'manage_countries', 'display_name' => 'Countries', 'route' => 'countries', 'module' => 'countries', 'as' => 'countries.index', 'icon' => 'fas fa-globe', 'parent' => '0', 'parent_original' => '0','sidebar_link' => '1', 'appear' => '1', 'ordering' => '50', ]);
+        $manageCountries = Permission::create([ 'name' => 'manage_countries', 'display_name' => 'Countries', 'route' => 'countries', 'module' => 'countries', 'as' => 'countries.index', 'icon' => 'fas fa-globe', 'parent' => '0', 'parent_original' => '0','sidebar_link' => '1', 'appear' => '1', 'ordering' => '100', ]);
         $manageCountries->parent_show = $manageCountries->id;
         $manageCountries->save();
         $showCountries    = Permission::create([ 'name' => 'show_countries',          'display_name' => 'Countries',              'route' => 'countries.index',          'module' => 'countries', 'as' => 'countries.index',       'icon' => 'fas fa-globe',        'parent' => $manageCountries->id, 'parent_show' => $manageCountries->id, 'parent_original' => $manageCountries->id,'sidebar_link' => '1', 'appear' => '1', ]);
@@ -213,6 +210,16 @@ class EntrustSeeder extends Seeder
         $destroyCities = Permission::create([ 'name' => 'delete_cities',        'display_name' => 'Delete Cities',       'route' => 'cities.destroy',        'module' => 'countries', 'as' => 'cities.destroy',     'icon' => null,                  'parent' => $manageCountries->id, 'parent_show' => $manageCountries->id, 'parent_original' => $manageCountries->id,'sidebar_link' => '1', 'appear' => '0', ]);
 
 
+        //Contact
+        $manageContacts = Permission::create([ 'name' => 'manage_contacts', 'display_name' => 'Contacts', 'route' => 'Contacts', 'module' => 'Contacts', 'as' => 'Contacts', 'icon' => 'fas fa-mobile-alt', 'parent' => '0', 'parent_original' => '0','sidebar_link' => '1', 'appear' => '1', 'ordering' => '115', ]);
+        $manageContacts->parent_show = $manageContacts->id;
+        $manageContacts->save();
+            ##Social Media
+            $showSocials    = Permission::create([ 'name' => 'show_social', 'display_name' => 'Social Media',   'route' => 'socials.index',     'module' => 'Contacts',     'as' => 'socials.index',    'icon' => 'fas fa-thumbs-up',           'parent' => $manageContacts->id, 'parent_show' => $manageContacts->id, 'parent_original' => $manageContacts->id,'sidebar_link' => '1', 'appear' => '1', ]);
+            ##Phone Number
+            $showPhones     = Permission::create([ 'name' => 'show_phone',  'display_name' => 'Phones',         'route' => 'phones.index',      'module' => 'Contacts',     'as' => 'phones.index',     'icon' => 'fas fa-phone-square-alt',    'parent' => $manageContacts->id, 'parent_show' => $manageContacts->id, 'parent_original' => $manageContacts->id,'sidebar_link' => '1', 'appear' => '1', ]);
+            ##E_Mail
+            $showEmails     = Permission::create([ 'name' => 'show_email',  'display_name' => 'E-Mails',        'route' => 'emails.index',      'module' => 'Contacts',     'as' => 'emails.index',     'icon' => 'fas fa-envelope-open-text',  'parent' => $manageContacts->id, 'parent_show' => $manageContacts->id, 'parent_original' => $manageContacts->id,'sidebar_link' => '1', 'appear' => '1', ]);
 
 
 

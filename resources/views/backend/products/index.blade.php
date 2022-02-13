@@ -110,7 +110,7 @@
                                         @endability
 
                                         @ability('superAdmin', 'manage_products,delete_products')
-                                            <a href="javascript:void(0)" 
+                                            <a href="javascript:void(0)"
                                                 onclick="
                                                     if (confirm('Are You Sure You Want To Delete This Record ?') )
                                                         { document.getElementById('record_delete_{{ $product->id }}').submit(); }
@@ -129,39 +129,14 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{-- Pagination --}}
+                <div class="d-flex justify-content-center">
+                    {!! $products->appends(request()->input())->links() !!}
+                </div>
             </div>
         </div>
     </div>
-    <script>
-        $(function () {
-            $('.status-class').change(function() {
-                console.log("success");
-                var status = $(this).prop('checked') == true ? 1 : 0;
-                var cat_id = $(this).data('id');
 
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: '{{ route('admin.products.changeStatus') }}',
-                    data: {
-                        'status': status,
-                        'cat_id': cat_id
-                    },
-                    success: function(data) {
-                        Swal.fire({
-                            title: 'Status Change Successfully',
-                            showClass: {
-                                popup: 'animate__animated animate__fadeInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__fadeOutUp'
-                            }
-                        })
-                    }
-                });
-            })
-        });
-    </script>
 @endsection
 @section('script')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

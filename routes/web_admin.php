@@ -6,9 +6,12 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CityController;
 use App\Http\Controllers\Backend\CountryController;
 use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\EmailController;
+use App\Http\Controllers\Backend\PhoneController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProductCouponController;
 use App\Http\Controllers\Backend\ProductReviewController;
+use App\Http\Controllers\Backend\SocialMediaController;
 use App\Http\Controllers\Backend\StateController;
 use App\Http\Controllers\Backend\TagController;
 use App\Http\Controllers\Backend\UserController;
@@ -110,6 +113,20 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.' ], function(){
             Route::resource('cities'    ,CityController::class);
             Route::get('cities-changeStatus', [CityController::class,'changeStatus'])->name('cities.changeStatus');
             Route::post('cities-destroyAll', [CityController::class,'massDestroy'])->name('cities.massDestroy');
+
+
+            /*  socials   */
+            Route::resource('socials'    ,SocialMediaController::class);
+            Route::get('socials-changeStatus', [SocialMediaController::class,'changeStatus'])->name('socials.changeStatus');
+            Route::post('socials-destroyAll', [SocialMediaController::class,'massDestroy'])->name('socials.massDestroy');
+            /*  phones   */
+            Route::resource('phones'    ,PhoneController::class);
+            Route::get('phones-changeStatus', [PhoneController::class,'changeStatus'])->name('phones.changeStatus');
+            Route::post('phones-destroyAll', [PhoneController::class,'massDestroy'])->name('phones.massDestroy');
+            /*  emails   */
+            Route::resource('emails'    ,EmailController::class);
+            Route::get('emails-changeStatus', [EmailController::class,'changeStatus'])->name('emails.changeStatus');
+            Route::post('emails-destroyAll', [EmailController::class,'massDestroy'])->name('emails.massDestroy');
 
 
         });
